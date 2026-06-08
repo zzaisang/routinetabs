@@ -1,0 +1,97 @@
+@import "../styles/theme.css";
+
+body {
+  width: 340px;
+  min-height: 160px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.title {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+main {
+  padding: 8px 14px;
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.card-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.card-name {
+  font-weight: 600;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.card-meta {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+.card-meta .next-run.disabled {
+  color: var(--text-muted);
+  font-style: italic;
+}
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
+.card-actions .btn {
+  flex: 1;
+}
+
+.empty {
+  text-align: center;
+  padding: 28px 8px;
+}
+.empty-title {
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+.empty-sub {
+  color: var(--text-muted);
+  margin: 0;
+  font-size: 13px;
+}
+
+.footer {
+  display: flex;
+  gap: 8px;
+  padding: 12px 14px;
+  border-top: 1px solid var(--border);
+}
+.footer .btn {
+  flex: 1;
+}
+
+.url-count {
+  font-size: 11px;
+  color: var(--text-muted);
+}

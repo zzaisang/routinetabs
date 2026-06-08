@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RoutineTabs</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1 class="title">RoutineTabs</h1>
+      <span id="plan-badge" class="badge badge-free" title="Your plan">Free</span>
+    </header>
+
+    <main id="content">
+      <div id="routine-list" class="list" aria-live="polite"></div>
+
+      <div id="empty-state" class="empty" hidden>
+        <p class="empty-title">No routines yet</p>
+        <p class="empty-sub">
+          Create your first routine to open your daily tabs automatically.
+        </p>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <button id="add-routine" class="btn btn-primary">＋ Add routine</button>
+      <button id="upgrade" class="btn btn-ghost" hidden>Upgrade $9</button>
+    </footer>
+
+    <!-- Upgrade modal (shown when a free user hits the routine limit) -->
+    <div id="upgrade-modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="upgrade-title">
+      <div class="modal-card">
+        <h2 id="upgrade-title">Upgrade to Pro</h2>
+        <p>
+          The free plan includes <strong>1 routine</strong>. Unlock
+          <strong>unlimited routines</strong> with a one-time
+          <strong>$9</strong> purchase — no subscription, ever.
+        </p>
+        <div class="modal-actions">
+          <button id="modal-cancel" class="btn btn-ghost">Not now</button>
+          <button id="modal-upgrade" class="btn btn-primary">Upgrade $9</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="popup.ts"></script>
+  </body>
+</html>

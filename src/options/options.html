@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RoutineTabs — Settings</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="page-header">
+        <div>
+          <h1>RoutineTabs</h1>
+          <p class="tagline">It just works. Open your daily tabs, on schedule.</p>
+        </div>
+        <span id="plan-badge" class="badge badge-free">Free</span>
+      </header>
+
+      <!-- Routine list + editor -->
+      <section class="section">
+        <div class="section-head">
+          <h2>Routines</h2>
+          <button id="new-routine" class="btn btn-primary btn-sm">＋ New routine</button>
+        </div>
+        <div id="routine-list" class="routine-list"></div>
+        <p id="list-empty" class="muted" hidden>No routines yet. Create one above.</p>
+      </section>
+
+      <!-- Editor (hidden until editing) -->
+      <section id="editor" class="section card-edit" hidden>
+        <h2 id="editor-title">Edit routine</h2>
+
+        <label class="field">
+          <span class="field-label">Name</span>
+          <input id="f-name" type="text" placeholder="Morning work tabs" />
+        </label>
+
+        <label class="field">
+          <span class="field-label">URLs (one per line)</span>
+          <textarea
+            id="f-urls"
+            rows="5"
+            placeholder="https://mail.google.com&#10;https://calendar.google.com&#10;example.com"
+          ></textarea>
+          <span class="field-hint">http/https only. A scheme will be added if you omit it.</span>
+          <span id="url-errors" class="field-error" hidden></span>
+        </label>
+
+        <fieldset class="field">
+          <legend class="field-label">Days</legend>
+          <div id="f-days" class="days"></div>
+        </fieldset>
+
+        <label class="field">
+          <span class="field-label">Time (local)</span>
+          <input id="f-time" type="time" value="09:00" />
+        </label>
+
+        <label class="field field-inline">
+          <input id="f-newwindow" type="checkbox" />
+          <span>Open in a new window</span>
+        </label>
+
+        <label class="field field-inline">
+          <input id="f-enabled" type="checkbox" checked />
+          <span>Enabled</span>
+        </label>
+
+        <div class="editor-actions">
+          <button id="editor-delete" class="btn btn-danger" hidden>Delete</button>
+          <span class="spacer"></span>
+          <button id="editor-cancel" class="btn btn-ghost">Cancel</button>
+          <button id="editor-save" class="btn btn-primary">Save</button>
+        </div>
+      </section>
+
+      <!-- Global settings -->
+      <section class="section">
+        <h2>Catch-up</h2>
+        <p class="muted">
+          If your browser was closed during a scheduled time, RoutineTabs can run the
+          missed routine when you reopen Chrome (within a grace window).
+        </p>
+        <label class="field field-inline">
+          <input id="s-catchup" type="checkbox" checked />
+          <span>Enable catch-up for missed runs</span>
+        </label>
+        <label class="field">
+          <span class="field-label">Grace window (minutes)</span>
+          <input id="s-grace" type="number" min="0" max="1440" value="120" />
+          <span class="field-hint">
+            Missed runs older than this are ignored (so yesterday's tabs don't open today).
+          </span>
+        </label>
+        <button id="save-settings" class="btn btn-ghost btn-sm">Save settings</button>
+        <span id="settings-saved" class="saved-note" hidden>Saved ✓</span>
+      </section>
+
+      <!-- Pro upgrade -->
+      <section class="section">
+        <h2>Pro</h2>
+        <div id="pro-free" class="pro-box">
+          <p>
+            You're on the <strong>Free</strong> plan (1 routine). Unlock
+            <strong>unlimited routines</strong> with a one-time <strong>$9</strong> purchase.
+            No subscription, ever.
+          </p>
+          <button id="upgrade" class="btn btn-primary">Upgrade — $9 one-time</button>
+        </div>
+        <div id="pro-active" class="pro-box" hidden>
+          <p>You're on <strong>Pro</strong>. Thank you for your support! 🎉</p>
+        </div>
+      </section>
+
+      <footer class="page-footer muted">
+        Minimal permissions — RoutineTabs never reads your browsing data.
+      </footer>
+    </div>
+
+    <script type="module" src="options.ts"></script>
+  </body>
+</html>

@@ -32,10 +32,6 @@ chrome.runtime.onInstalled.addListener(onInstalled);
 chrome.runtime.onStartup.addListener(onStartup);
 chrome.runtime.onMessage.addListener(handleMessage);
 
-// Best-effort warm path: when the worker spins up for any reason, ensure alarms
-// exist and catch up missed runs. This is idempotent and cheap.
-warmUp().catch((e) => console.error('[RoutineTabs] warmUp failed', e));
-
 // ── Handlers ─────────────────────────────────────────────────────────────────
 
 async function onInstalled(details: chrome.runtime.InstalledDetails): Promise<void> {
@@ -173,3 +169,10 @@ function handleMessage(
   // Return true to keep the message channel open for the async response.
   return true;
 }
+
+// ── Cold-start warm path ─────────────────────────────────────────────────────
+// Best-effort: when the worker spins up for any reason, ensure alarms exist and
+// catch up missed runs. Invoked at the very bottom so all module-level bindings
+// (e.g. `warmedThisSession`) are initialized first — calling it earlier hits a
+// TDZ ReferenceError ("Cannot access ... before initialization") on cold start.
+warmUp().catch((e) => console.error('[RoutineTabs] warmUp failed', e));

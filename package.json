@@ -1,7 +1,7 @@
 {
   "name": "routinetabs",
-  "version": "0.1.0",
-  "description": "Reliably open your daily tab sets on a schedule. DST-safe, minimal permissions, one-time price.",
+  "version": "1.0.0",
+  "description": "Open your daily tab sets automatically on a weekly schedule. Reliable and DST-safe, completely free, with minimal permissions.",
   "private": true,
   "type": "module",
   "scripts": {

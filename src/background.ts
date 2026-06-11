@@ -24,7 +24,6 @@ import {
 } from './lib/alarms';
 import { openRoutineTabs } from './lib/tabs';
 import { getMissedOccurrence } from './lib/schedule';
-import { startBackgroundLicense } from './lib/license';
 import type { Routine } from './lib/types';
 
 // ── Synchronous top-level listener registration ──────────────────────────────
@@ -32,9 +31,6 @@ chrome.alarms.onAlarm.addListener(handleAlarm);
 chrome.runtime.onInstalled.addListener(onInstalled);
 chrome.runtime.onStartup.addListener(onStartup);
 chrome.runtime.onMessage.addListener(handleMessage);
-
-// ExtensionPay background handlers (no-op in stub mode).
-startBackgroundLicense();
 
 // Best-effort warm path: when the worker spins up for any reason, ensure alarms
 // exist and catch up missed runs. This is idempotent and cheap.

@@ -11,7 +11,7 @@
       <h1 class="title">RoutineTabs</h1>
       <div class="topbar-right">
         <button id="lang-toggle" class="lang-toggle" type="button"></button>
-        <span id="plan-badge" class="badge badge-free" data-i18n-title="plan.badgeTitle">Free</span>
+        <button id="sponsor" class="sponsor-link" type="button" data-i18n="popup.sponsor">❤️ Sponsor</button>
       </div>
     </header>
 
@@ -28,24 +28,7 @@
 
     <footer class="footer">
       <button id="add-routine" class="btn btn-primary" data-i18n="popup.add">＋ Add routine</button>
-      <button id="upgrade" class="btn btn-ghost" data-i18n="popup.upgrade" hidden>Upgrade $9</button>
     </footer>
-
-    <!-- Upgrade modal (shown when a free user hits the routine limit) -->
-    <div id="upgrade-modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="upgrade-title">
-      <div class="modal-card">
-        <h2 id="upgrade-title" data-i18n="modal.title">Upgrade to Pro</h2>
-        <p data-i18n-html="modal.body">
-          The free plan includes <strong>1 routine</strong>. Unlock
-          <strong>unlimited routines</strong> with a one-time
-          <strong>$9</strong> purchase — no subscription, ever.
-        </p>
-        <div class="modal-actions">
-          <button id="modal-cancel" class="btn btn-ghost" data-i18n="modal.cancel">Not now</button>
-          <button id="modal-upgrade" class="btn btn-primary" data-i18n="modal.upgrade">Upgrade $9</button>
-        </div>
-      </div>
-    </div>
 
     <script type="module" src="popup.ts"></script>
   </body>

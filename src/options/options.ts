@@ -1,5 +1,6 @@
-// Options page logic (PLAN.md §7.2, M1 + M5).
-// Routine CRUD, global catch-up settings, and Pro upgrade.
+// Options page logic (PLAN.md §7.2, M1).
+// Routine CRUD, global catch-up settings, and a GitHub Sponsors link.
+// All features are free — there is no paywall.
 
 import {
   getState,
@@ -11,7 +12,7 @@ import {
   setSettings,
 } from '../lib/storage';
 import { reschedule, clearAlarm } from '../lib/messaging';
-import { isPaid, openPaymentPage, onPaidChanged } from '../lib/license';
+import { openSponsorPage } from '../lib/sponsor';
 import { normalizeUrlList, linesToArray } from '../lib/url';
 import { formatDays, formatNextRun } from '../lib/format';
 import {
@@ -24,14 +25,9 @@ import {
   tabCount,
   t,
 } from '../lib/i18n';
-import {
-  FREE_ROUTINE_LIMIT,
-  type Routine,
-  type Settings,
-} from '../lib/types';
+import { type Routine, type Settings } from '../lib/types';
 
 const els = {
-  badge: document.getElementById('plan-badge') as HTMLSpanElement,
   langToggle: document.getElementById('lang-toggle') as HTMLButtonElement,
   list: document.getElementById('routine-list') as HTMLDivElement,
   listEmpty: document.getElementById('list-empty') as HTMLParagraphElement,
@@ -55,12 +51,9 @@ const els = {
   saveSettingsBtn: document.getElementById('save-settings') as HTMLButtonElement,
   settingsSaved: document.getElementById('settings-saved') as HTMLSpanElement,
 
-  proFree: document.getElementById('pro-free') as HTMLDivElement,
-  proActive: document.getElementById('pro-active') as HTMLDivElement,
-  upgradeBtn: document.getElementById('upgrade') as HTMLButtonElement,
+  sponsorBtn: document.getElementById('sponsor') as HTMLButtonElement,
 };
 
-let paid = false;
 let editingId: string | null = null; // null => creating new
 
 // ── Day chips ────────────────────────────────────────────────────────────────
@@ -95,15 +88,6 @@ function setSelectedDays(days: number[]): void {
     i.checked = checked;
     (i.closest('.day-chip') as HTMLElement).classList.toggle('checked', checked);
   });
-}
-
-// ── Plan ─────────────────────────────────────────────────────────────────────
-async function refreshPlan(): Promise<void> {
-  paid = await isPaid();
-  els.badge.textContent = paid ? t('plan.pro') : t('plan.free');
-  els.badge.className = paid ? 'badge badge-pro' : 'badge badge-free';
-  els.proFree.hidden = paid;
-  els.proActive.hidden = !paid;
 }
 
 // ── List ─────────────────────────────────────────────────────────────────────
@@ -145,15 +129,6 @@ function renderListItem(routine: Routine): HTMLElement {
 
 // ── Editor ───────────────────────────────────────────────────────────────────
 async function openEditor(id: string | null): Promise<void> {
-  // Gate creation behind free limit.
-  if (id === null) {
-    const routines = await getRoutines();
-    if (!paid && routines.length >= FREE_ROUTINE_LIMIT) {
-      void openPaymentPage();
-      return;
-    }
-  }
-
   editingId = id;
   els.urlErrors.hidden = true;
   els.urlErrors.textContent = '';
@@ -272,12 +247,11 @@ els.saveBtn.addEventListener('click', () => void saveEditor());
 els.cancelBtn.addEventListener('click', closeEditor);
 els.deleteBtn.addEventListener('click', () => void handleDelete());
 els.saveSettingsBtn.addEventListener('click', () => void saveSettingsHandler());
-els.upgradeBtn.addEventListener('click', () => void openPaymentPage());
+els.sponsorBtn.addEventListener('click', () => openSponsorPage());
 els.langToggle.addEventListener('click', async () => {
   await setLanguage(otherLang());
   location.reload(); // simplest reliable re-render of static + dynamic strings
 });
-onPaidChanged(() => void refreshPlan());
 
 async function init(): Promise<void> {
   await initI18n();
@@ -285,7 +259,6 @@ async function init(): Promise<void> {
   document.title = t('options.docTitle');
   els.langToggle.textContent = languageToggleLabel();
   buildDayChips();
-  await refreshPlan();
   await loadSettings();
   await renderList();
 

@@ -17,8 +17,9 @@ full product/market rationale.
 - **Enable/disable toggle that truly stops a routine** (the #1 competitor's core bug).
 - **Reliability engine**: DST-safe scheduling, recovery after the service worker is
   evicted, and catch-up for runs missed while the browser was closed.
-- **Free**: 1 routine. **Pro ($9 one-time)**: unlimited routines.
-- Dark mode, English UI, **only `alarms` + `storage` permissions** (never reads your browsing data).
+- **Fully free** — all features unlocked. Optional **[GitHub Sponsors](https://github.com/sponsors)**
+  link to support development (no paywall, nothing locked behind it).
+- Dark mode, **English / Korean toggle**, **only `alarms` + `storage` permissions** (never reads your browsing data).
 
 ---
 
@@ -26,7 +27,7 @@ full product/market rationale.
 
 - **TypeScript + Vite + [@crxjs/vite-plugin](https://crxjs.dev/)** (MV3 build + HMR).
 - No UI framework (vanilla TS + CSS) for low maintenance.
-- Payments via **[ExtensionPay](https://extensionpay.com)** (serverless license handling).
+- Donations via an external **[GitHub Sponsors](https://github.com/sponsors)** link (no in-app payments, no backend).
 - **Vitest** unit tests for the pure scheduling logic.
 
 ---
@@ -47,7 +48,8 @@ routinetabs/
 │   │   ├── storage.ts        # chrome.storage.local wrapper + migration
 │   │   ├── tabs.ts           # opening tabs / windows
 │   │   ├── url.ts            # URL normalization + validation
-│   │   ├── license.ts        # ExtensionPay wrapper (stub-safe)
+│   │   ├── sponsor.ts        # GitHub Sponsors donation link
+│   │   ├── i18n.ts           # English/Korean dictionary + runtime language toggle
 │   │   ├── messaging.ts      # typed popup/options -> background messages
 │   │   ├── format.ts         # display helpers (next-run, day labels)
 │   │   └── types.ts          # data model
@@ -107,20 +109,21 @@ All implemented in `src/background.ts`, `src/lib/alarms.ts`, `src/lib/schedule.t
 
 ---
 
-## Monetization status (ExtensionPay)
+## Monetization model (free + donations)
 
-The client integration is fully wired but runs in a **safe stub mode** until you
-register the extension with ExtensionPay. In stub mode `isPaid()` returns `false`
-(free tier) and the upgrade buttons show an info message instead of crashing — so
-the entire free product builds, loads, and is testable today.
+RoutineTabs is **fully free** — every feature is unlocked, no paywall. Donations are
+optional via an external **GitHub Sponsors** link (no in-app payments, no backend,
+no extra permissions). The link lives in `src/lib/sponsor.ts`:
 
-To enable real payments (`src/lib/license.ts`):
+1. Enable GitHub Sponsors for your account at <https://github.com/sponsors>
+   (Korea payouts are supported via Stripe Connect / GitHub's manual payout).
+2. Confirm the handle in `SPONSOR_URL` (currently `github.com/sponsors/zzaisang`).
+   The link 404s until Sponsors is active on the account.
+3. The popup header and the options "Support" section open this URL via
+   `chrome.tabs.create` — no permission needed.
 
-1. Sign up at <https://extensionpay.com> and register this extension to get its id.
-2. Set `EXTPAY_ID` in `src/lib/license.ts` (or define `VITE_EXTPAY_ID` at build time).
-3. Configure a **$9 one-time** product in the ExtensionPay dashboard.
-4. Rebuild. `background.ts` already calls `startBackgroundLicense()`, and the popup /
-   options pages call `isPaid()` / `openPaymentPage()`.
+> Chrome Web Store allows external donation links as long as they're transparent and
+> payment isn't processed inside the extension — which is exactly this setup.
 
 ---
 
@@ -128,7 +131,7 @@ To enable real payments (`src/lib/license.ts`):
 
 | # | Task | Why it can't be done here |
 |---|------|---------------------------|
-| 1 | **Register with ExtensionPay** and set `EXTPAY_ID` (+ create the $9 product) | Requires your account; see `src/lib/license.ts`. |
+| 1 | **Enable GitHub Sponsors** and confirm `SPONSOR_URL` in `src/lib/sponsor.ts` | Requires your account; set up at <https://github.com/sponsors>. |
 | 2 | **Replace placeholder icons** in `public/icons/` (16/32/48/128) with real artwork | Auto-generated clock placeholders are functional but plain. Regenerate or drop in your own PNGs of the same names/sizes. |
 | 3 | **Chrome Web Store developer registration ($5 one-time)** and store submission | Paid, manual, account-bound. |
 | 4 | **Confirm the name "RoutineTabs"** is free of store/trademark conflicts | Manual check; have 1–2 backup names ready. |

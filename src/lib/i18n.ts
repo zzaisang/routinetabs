@@ -96,10 +96,7 @@ export function otherLang(): Language {
 // ── Messages ──────────────────────────────────────────────────────────────────
 const MESSAGES: Record<Language, Dict> = {
   en: {
-    // Plan / shared
-    'plan.free': 'Free',
-    'plan.pro': 'Pro',
-    'plan.badgeTitle': 'Your plan',
+    // Shared
     'routine.untitled': 'Untitled routine',
 
     // Days
@@ -127,19 +124,12 @@ const MESSAGES: Record<Language, Dict> = {
     'popup.empty.sub':
       'Create your first routine to open your daily tabs automatically.',
     'popup.add': '＋ Add routine',
-    'popup.upgrade': 'Upgrade $9',
+    'popup.sponsor': '❤️ Sponsor',
     'card.runNow': '▶ Run now',
     'card.edit': 'Edit',
     'card.enabledTitle': 'Enabled',
     'card.disabledTitle': 'Disabled',
     'card.toggleAria': 'Toggle {name}',
-
-    // Upgrade modal
-    'modal.title': 'Upgrade to Pro',
-    'modal.body':
-      'The free plan includes <strong>1 routine</strong>. Unlock <strong>unlimited routines</strong> with a one-time <strong>$9</strong> purchase — no subscription, ever.',
-    'modal.cancel': 'Not now',
-    'modal.upgrade': 'Upgrade $9',
 
     // Options
     'options.docTitle': 'RoutineTabs — Settings',
@@ -174,13 +164,11 @@ const MESSAGES: Record<Language, Dict> = {
     'catchup.save': 'Save settings',
     'catchup.saved': 'Saved ✓',
 
-    // Pro section
-    'pro.title': 'Pro',
-    'pro.freeBody':
-      "You're on the <strong>Free</strong> plan (1 routine). Unlock <strong>unlimited routines</strong> with a one-time <strong>$9</strong> purchase. No subscription, ever.",
-    'pro.upgradeBtn': 'Upgrade — $9 one-time',
-    'pro.activeBody':
-      "You're on <strong>Pro</strong>. Thank you for your support! 🎉",
+    // Support section
+    'support.title': 'Support',
+    'support.body':
+      'RoutineTabs is <strong>free</strong>, with all features unlocked. If it saves you time, you can support development through <strong>GitHub Sponsors</strong> — entirely optional, no features are locked behind it.',
+    'support.button': '❤️ Sponsor on GitHub',
     'options.footer':
       'Minimal permissions — RoutineTabs never reads your browsing data.',
 
@@ -193,10 +181,7 @@ const MESSAGES: Record<Language, Dict> = {
   },
 
   ko: {
-    // Plan / shared
-    'plan.free': '무료',
-    'plan.pro': 'Pro',
-    'plan.badgeTitle': '현재 플랜',
+    // Shared
     'routine.untitled': '이름 없는 루틴',
 
     // Days
@@ -223,19 +208,12 @@ const MESSAGES: Record<Language, Dict> = {
     'popup.empty.title': '아직 루틴이 없습니다',
     'popup.empty.sub': '첫 루틴을 만들어 매일 쓰는 탭을 자동으로 열어보세요.',
     'popup.add': '＋ 루틴 추가',
-    'popup.upgrade': '$9로 업그레이드',
+    'popup.sponsor': '❤️ 후원',
     'card.runNow': '▶ 지금 실행',
     'card.edit': '편집',
     'card.enabledTitle': '켜짐',
     'card.disabledTitle': '꺼짐',
     'card.toggleAria': '{name} 켜기/끄기',
-
-    // Upgrade modal
-    'modal.title': 'Pro로 업그레이드',
-    'modal.body':
-      '무료 플랜은 <strong>루틴 1개</strong>를 포함합니다. 한 번의 <strong>$9</strong> 결제로 <strong>무제한 루틴</strong>을 잠금 해제하세요 — 구독은 절대 없습니다.',
-    'modal.cancel': '나중에',
-    'modal.upgrade': '$9로 업그레이드',
 
     // Options
     'options.docTitle': 'RoutineTabs — 설정',
@@ -270,13 +248,11 @@ const MESSAGES: Record<Language, Dict> = {
     'catchup.save': '설정 저장',
     'catchup.saved': '저장됨 ✓',
 
-    // Pro section
-    'pro.title': 'Pro',
-    'pro.freeBody':
-      '현재 <strong>무료</strong> 플랜입니다 (루틴 1개). 한 번의 <strong>$9</strong> 결제로 <strong>무제한 루틴</strong>을 잠금 해제하세요. 구독은 절대 없습니다.',
-    'pro.upgradeBtn': '업그레이드 — $9 일회성',
-    'pro.activeBody':
-      '<strong>Pro</strong> 플랜입니다. 응원해 주셔서 감사합니다! 🎉',
+    // Support section
+    'support.title': '후원',
+    'support.body':
+      'RoutineTabs는 <strong>무료</strong>이며 모든 기능이 열려 있습니다. 시간을 아껴 준다면 <strong>GitHub Sponsors</strong>로 개발을 후원할 수 있어요 — 전적으로 선택이며, 어떤 기능도 잠겨 있지 않습니다.',
+    'support.button': '❤️ GitHub에서 후원',
     'options.footer':
       '최소 권한 — RoutineTabs는 브라우징 데이터를 절대 읽지 않습니다.',
 

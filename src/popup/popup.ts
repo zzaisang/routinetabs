@@ -1,10 +1,10 @@
 // Popup logic (PLAN.md §7.1, M3).
 // Shows routines with toggle + "Run now", links to Options for editing,
-// shows plan badge, and gates "Add routine" behind the free limit.
+// and an optional GitHub Sponsors link. All features are free.
 
 import { getRoutines, upsertRoutine, onStateChanged } from '../lib/storage';
 import { reschedule, clearAlarm, runNow } from '../lib/messaging';
-import { isPaid, openPaymentPage, onPaidChanged } from '../lib/license';
+import { openSponsorPage } from '../lib/sponsor';
 import { formatNextRun, formatDays } from '../lib/format';
 import {
   initI18n,
@@ -15,28 +15,15 @@ import {
   t,
   tabCount,
 } from '../lib/i18n';
-import { FREE_ROUTINE_LIMIT, type Routine } from '../lib/types';
+import { type Routine } from '../lib/types';
 
 const els = {
   list: document.getElementById('routine-list') as HTMLDivElement,
   empty: document.getElementById('empty-state') as HTMLDivElement,
   addBtn: document.getElementById('add-routine') as HTMLButtonElement,
-  upgradeBtn: document.getElementById('upgrade') as HTMLButtonElement,
-  badge: document.getElementById('plan-badge') as HTMLSpanElement,
+  sponsorBtn: document.getElementById('sponsor') as HTMLButtonElement,
   langToggle: document.getElementById('lang-toggle') as HTMLButtonElement,
-  modal: document.getElementById('upgrade-modal') as HTMLDivElement,
-  modalCancel: document.getElementById('modal-cancel') as HTMLButtonElement,
-  modalUpgrade: document.getElementById('modal-upgrade') as HTMLButtonElement,
 };
-
-let paid = false;
-
-async function refreshPlan(): Promise<void> {
-  paid = await isPaid();
-  els.badge.textContent = paid ? t('plan.pro') : t('plan.free');
-  els.badge.className = paid ? 'badge badge-pro' : 'badge badge-free';
-  els.upgradeBtn.hidden = paid;
-}
 
 function openOptions(routineId?: string): void {
   const base = chrome.runtime.getURL('src/options/options.html');
@@ -131,45 +118,20 @@ function renderCard(routine: Routine): HTMLElement {
   return card;
 }
 
-// ── Add routine gating ───────────────────────────────────────────────────────
-async function handleAdd(): Promise<void> {
-  const routines = await getRoutines();
-  if (!paid && routines.length >= FREE_ROUTINE_LIMIT) {
-    showUpgradeModal();
-    return;
-  }
-  openOptions(); // new routine in options page
-}
-
-function showUpgradeModal(): void {
-  els.modal.hidden = false;
-}
-function hideUpgradeModal(): void {
-  els.modal.hidden = true;
-}
-
 // ── Wiring ───────────────────────────────────────────────────────────────────
-els.addBtn.addEventListener('click', handleAdd);
-els.upgradeBtn.addEventListener('click', () => void openPaymentPage());
-els.modalCancel.addEventListener('click', hideUpgradeModal);
-els.modalUpgrade.addEventListener('click', () => void openPaymentPage());
-els.modal.addEventListener('click', (e) => {
-  if (e.target === els.modal) hideUpgradeModal();
-});
-
+els.addBtn.addEventListener('click', () => openOptions()); // all features free, no gate
+els.sponsorBtn.addEventListener('click', () => openSponsorPage());
 els.langToggle.addEventListener('click', async () => {
   await setLanguage(otherLang());
   location.reload(); // simplest reliable re-render of static + dynamic strings
 });
 
 onStateChanged((state) => render(state.routines));
-onPaidChanged(() => void refreshPlan());
 
 async function init(): Promise<void> {
   await initI18n();
   applyStaticI18n();
   els.langToggle.textContent = languageToggleLabel();
-  await refreshPlan();
   render(await getRoutines());
 }
 

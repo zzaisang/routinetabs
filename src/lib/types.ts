@@ -34,10 +34,7 @@ export interface StorageShape {
   schemaVersion: number; // migration marker, starts at 1
   routines: Routine[];
   settings: Settings;
-  // license is queried at runtime from ExtensionPay (may be cached).
 }
-
-export const FREE_ROUTINE_LIMIT = 1;
 
 export const DEFAULT_SETTINGS: Settings = {
   catchUpEnabled: true,

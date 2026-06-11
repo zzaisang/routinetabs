@@ -42,6 +42,10 @@ function migrate(raw: unknown): StorageShape {
       obj.settings.catchUpGraceMinutes >= 0
         ? obj.settings.catchUpGraceMinutes
         : DEFAULT_SETTINGS.catchUpGraceMinutes,
+    language:
+      obj.settings?.language === 'ko' || obj.settings?.language === 'en'
+        ? obj.settings.language
+        : DEFAULT_SETTINGS.language,
   };
 
   return {

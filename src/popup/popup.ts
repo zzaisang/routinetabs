@@ -6,6 +6,15 @@ import { getRoutines, upsertRoutine, onStateChanged } from '../lib/storage';
 import { reschedule, clearAlarm, runNow } from '../lib/messaging';
 import { isPaid, openPaymentPage, onPaidChanged } from '../lib/license';
 import { formatNextRun, formatDays } from '../lib/format';
+import {
+  initI18n,
+  applyStaticI18n,
+  setLanguage,
+  otherLang,
+  languageToggleLabel,
+  t,
+  tabCount,
+} from '../lib/i18n';
 import { FREE_ROUTINE_LIMIT, type Routine } from '../lib/types';
 
 const els = {
@@ -14,6 +23,7 @@ const els = {
   addBtn: document.getElementById('add-routine') as HTMLButtonElement,
   upgradeBtn: document.getElementById('upgrade') as HTMLButtonElement,
   badge: document.getElementById('plan-badge') as HTMLSpanElement,
+  langToggle: document.getElementById('lang-toggle') as HTMLButtonElement,
   modal: document.getElementById('upgrade-modal') as HTMLDivElement,
   modalCancel: document.getElementById('modal-cancel') as HTMLButtonElement,
   modalUpgrade: document.getElementById('modal-upgrade') as HTMLButtonElement,
@@ -23,7 +33,7 @@ let paid = false;
 
 async function refreshPlan(): Promise<void> {
   paid = await isPaid();
-  els.badge.textContent = paid ? 'Pro' : 'Free';
+  els.badge.textContent = paid ? t('plan.pro') : t('plan.free');
   els.badge.className = paid ? 'badge badge-pro' : 'badge badge-free';
   els.upgradeBtn.hidden = paid;
 }
@@ -58,16 +68,16 @@ function renderCard(routine: Routine): HTMLElement {
 
   const name = document.createElement('span');
   name.className = 'card-name';
-  name.textContent = routine.name || 'Untitled routine';
+  name.textContent = routine.name || t('routine.untitled');
   name.title = routine.name;
 
   const toggle = document.createElement('label');
   toggle.className = 'switch';
-  toggle.title = routine.enabled ? 'Enabled' : 'Disabled';
+  toggle.title = routine.enabled ? t('card.enabledTitle') : t('card.disabledTitle');
   const input = document.createElement('input');
   input.type = 'checkbox';
   input.checked = routine.enabled;
-  input.setAttribute('aria-label', `Toggle ${routine.name}`);
+  input.setAttribute('aria-label', t('card.toggleAria', { name: routine.name }));
   const slider = document.createElement('span');
   slider.className = 'slider';
   toggle.append(input, slider);
@@ -95,7 +105,7 @@ function renderCard(routine: Routine): HTMLElement {
 
   const urlCount = document.createElement('div');
   urlCount.className = 'url-count';
-  urlCount.textContent = `${routine.urls.length} tab${routine.urls.length === 1 ? '' : 's'}`;
+  urlCount.textContent = tabCount(routine.urls.length);
 
   // Row 3: actions
   const actions = document.createElement('div');
@@ -103,7 +113,7 @@ function renderCard(routine: Routine): HTMLElement {
 
   const runBtn = document.createElement('button');
   runBtn.className = 'btn btn-ghost btn-sm';
-  runBtn.textContent = '▶ Run now';
+  runBtn.textContent = t('card.runNow');
   runBtn.addEventListener('click', async () => {
     runBtn.disabled = true;
     await runNow(routine.id);
@@ -112,7 +122,7 @@ function renderCard(routine: Routine): HTMLElement {
 
   const editBtn = document.createElement('button');
   editBtn.className = 'btn btn-ghost btn-sm';
-  editBtn.textContent = 'Edit';
+  editBtn.textContent = t('card.edit');
   editBtn.addEventListener('click', () => openOptions(routine.id));
 
   actions.append(runBtn, editBtn);
@@ -147,10 +157,18 @@ els.modal.addEventListener('click', (e) => {
   if (e.target === els.modal) hideUpgradeModal();
 });
 
+els.langToggle.addEventListener('click', async () => {
+  await setLanguage(otherLang());
+  location.reload(); // simplest reliable re-render of static + dynamic strings
+});
+
 onStateChanged((state) => render(state.routines));
 onPaidChanged(() => void refreshPlan());
 
 async function init(): Promise<void> {
+  await initI18n();
+  applyStaticI18n();
+  els.langToggle.textContent = languageToggleLabel();
   await refreshPlan();
   render(await getRoutines());
 }

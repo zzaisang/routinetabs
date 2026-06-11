@@ -11,108 +11,111 @@
       <header class="page-header">
         <div>
           <h1>RoutineTabs</h1>
-          <p class="tagline">It just works. Open your daily tabs, on schedule.</p>
+          <p class="tagline" data-i18n="options.tagline">It just works. Open your daily tabs, on schedule.</p>
         </div>
-        <span id="plan-badge" class="badge badge-free">Free</span>
+        <div class="header-right">
+          <button id="lang-toggle" class="lang-toggle" type="button"></button>
+          <span id="plan-badge" class="badge badge-free">Free</span>
+        </div>
       </header>
 
       <!-- Routine list + editor -->
       <section class="section">
         <div class="section-head">
-          <h2>Routines</h2>
-          <button id="new-routine" class="btn btn-primary btn-sm">＋ New routine</button>
+          <h2 data-i18n="options.routines">Routines</h2>
+          <button id="new-routine" class="btn btn-primary btn-sm" data-i18n="options.newRoutine">＋ New routine</button>
         </div>
         <div id="routine-list" class="routine-list"></div>
-        <p id="list-empty" class="muted" hidden>No routines yet. Create one above.</p>
+        <p id="list-empty" class="muted" data-i18n="options.listEmpty" hidden>No routines yet. Create one above.</p>
       </section>
 
       <!-- Editor (hidden until editing) -->
       <section id="editor" class="section card-edit" hidden>
-        <h2 id="editor-title">Edit routine</h2>
+        <h2 id="editor-title" data-i18n="editor.titleEdit">Edit routine</h2>
 
         <label class="field">
-          <span class="field-label">Name</span>
-          <input id="f-name" type="text" placeholder="Morning work tabs" />
+          <span class="field-label" data-i18n="field.name">Name</span>
+          <input id="f-name" type="text" data-i18n-placeholder="field.name.ph" placeholder="Morning work tabs" />
         </label>
 
         <label class="field">
-          <span class="field-label">URLs (one per line)</span>
+          <span class="field-label" data-i18n="field.urls">URLs (one per line)</span>
           <textarea
             id="f-urls"
             rows="5"
             placeholder="https://mail.google.com&#10;https://calendar.google.com&#10;example.com"
           ></textarea>
-          <span class="field-hint">http/https only. A scheme will be added if you omit it.</span>
+          <span class="field-hint" data-i18n="field.urls.hint">http/https only. A scheme will be added if you omit it.</span>
           <span id="url-errors" class="field-error" hidden></span>
         </label>
 
         <fieldset class="field">
-          <legend class="field-label">Days</legend>
+          <legend class="field-label" data-i18n="field.days">Days</legend>
           <div id="f-days" class="days"></div>
         </fieldset>
 
         <label class="field">
-          <span class="field-label">Time (local)</span>
+          <span class="field-label" data-i18n="field.time">Time (local)</span>
           <input id="f-time" type="time" value="09:00" />
         </label>
 
         <label class="field field-inline">
           <input id="f-newwindow" type="checkbox" />
-          <span>Open in a new window</span>
+          <span data-i18n="field.newWindow">Open in a new window</span>
         </label>
 
         <label class="field field-inline">
           <input id="f-enabled" type="checkbox" checked />
-          <span>Enabled</span>
+          <span data-i18n="field.enabled">Enabled</span>
         </label>
 
         <div class="editor-actions">
-          <button id="editor-delete" class="btn btn-danger" hidden>Delete</button>
+          <button id="editor-delete" class="btn btn-danger" data-i18n="editor.delete" hidden>Delete</button>
           <span class="spacer"></span>
-          <button id="editor-cancel" class="btn btn-ghost">Cancel</button>
-          <button id="editor-save" class="btn btn-primary">Save</button>
+          <button id="editor-cancel" class="btn btn-ghost" data-i18n="editor.cancel">Cancel</button>
+          <button id="editor-save" class="btn btn-primary" data-i18n="editor.save">Save</button>
         </div>
       </section>
 
       <!-- Global settings -->
       <section class="section">
-        <h2>Catch-up</h2>
-        <p class="muted">
+        <h2 data-i18n="catchup.title">Catch-up</h2>
+        <p class="muted" data-i18n="catchup.desc">
           If your browser was closed during a scheduled time, RoutineTabs can run the
           missed routine when you reopen Chrome (within a grace window).
         </p>
         <label class="field field-inline">
           <input id="s-catchup" type="checkbox" checked />
-          <span>Enable catch-up for missed runs</span>
+          <span data-i18n="catchup.enable">Enable catch-up for missed runs</span>
         </label>
         <label class="field">
-          <span class="field-label">Grace window (minutes)</span>
+          <span class="field-label" data-i18n="catchup.grace">Grace window (minutes)</span>
           <input id="s-grace" type="number" min="0" max="1440" value="120" />
-          <span class="field-hint">
+          <span class="field-hint" data-i18n="catchup.graceHint">
             Missed runs older than this are ignored (so yesterday's tabs don't open today).
           </span>
         </label>
-        <button id="save-settings" class="btn btn-ghost btn-sm">Save settings</button>
-        <span id="settings-saved" class="saved-note" hidden>Saved ✓</span>
+        <button id="save-settings" class="btn btn-ghost btn-sm" data-i18n="catchup.save">Save settings</button>
+        <span id="settings-saved" class="saved-note" data-i18n="catchup.saved" hidden>Saved ✓</span>
       </section>
 
       <!-- Pro upgrade -->
       <section class="section">
-        <h2>Pro</h2>
+        <h2 data-i18n="pro.title">Pro</h2>
         <div id="pro-free" class="pro-box">
-          <p>
+          <p data-i18n-html="pro.freeBody">
             You're on the <strong>Free</strong> plan (1 routine). Unlock
             <strong>unlimited routines</strong> with a one-time <strong>$9</strong> purchase.
             No subscription, ever.
           </p>
-          <button id="upgrade" class="btn btn-primary">Upgrade — $9 one-time</button>
+          <button id="upgrade" class="btn btn-primary" data-i18n="pro.upgradeBtn">Upgrade — $9 one-time</button>
         </div>
         <div id="pro-active" class="pro-box" hidden>
-          <p>You're on <strong>Pro</strong>. Thank you for your support! 🎉</p>
+          <p data-i18n-html="pro.activeBody">You're on <strong>Pro</strong>. Thank you for your support! 🎉</p>
         </div>
       </section>
 
-      <footer class="page-footer muted">
+      <footer class="page-footer muted" data-i18n="options.footer">
         Minimal permissions — RoutineTabs never reads your browsing data.
       </footer>
     </div>

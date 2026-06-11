@@ -3,6 +3,9 @@
 
 export type WeekDay = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0=Sun ... 6=Sat
 
+/** UI language. Toggled in-app and persisted in settings (PLAN.md §3 update). */
+export type Language = 'en' | 'ko';
+
 export interface RoutineSchedule {
   /** Days of week the routine fires on. 0=Sun ... 6=Sat. May be empty (= never). */
   days: number[];
@@ -24,6 +27,7 @@ export interface Routine {
 export interface Settings {
   catchUpEnabled: boolean; // default true
   catchUpGraceMinutes: number; // default 120
+  language: Language; // default 'en'
 }
 
 export interface StorageShape {
@@ -38,6 +42,7 @@ export const FREE_ROUTINE_LIMIT = 1;
 export const DEFAULT_SETTINGS: Settings = {
   catchUpEnabled: true,
   catchUpGraceMinutes: 120,
+  language: 'en',
 };
 
 export const CURRENT_SCHEMA_VERSION = 1;

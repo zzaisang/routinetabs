@@ -15,15 +15,24 @@ import { isPaid, openPaymentPage, onPaidChanged } from '../lib/license';
 import { normalizeUrlList, linesToArray } from '../lib/url';
 import { formatDays, formatNextRun } from '../lib/format';
 import {
+  initI18n,
+  applyStaticI18n,
+  setLanguage,
+  otherLang,
+  languageToggleLabel,
+  shortDay,
+  tabCount,
+  t,
+} from '../lib/i18n';
+import {
   FREE_ROUTINE_LIMIT,
   type Routine,
   type Settings,
 } from '../lib/types';
 
-const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
 const els = {
   badge: document.getElementById('plan-badge') as HTMLSpanElement,
+  langToggle: document.getElementById('lang-toggle') as HTMLButtonElement,
   list: document.getElementById('routine-list') as HTMLDivElement,
   listEmpty: document.getElementById('list-empty') as HTMLParagraphElement,
   newBtn: document.getElementById('new-routine') as HTMLButtonElement,
@@ -67,7 +76,7 @@ function buildDayChips(): void {
       chip.classList.toggle('checked', input.checked);
     });
     const span = document.createElement('span');
-    span.textContent = DAY_LABELS[d];
+    span.textContent = shortDay(d);
     chip.append(input, span);
     els.fDays.appendChild(chip);
   }
@@ -91,7 +100,7 @@ function setSelectedDays(days: number[]): void {
 // ── Plan ─────────────────────────────────────────────────────────────────────
 async function refreshPlan(): Promise<void> {
   paid = await isPaid();
-  els.badge.textContent = paid ? 'Pro' : 'Free';
+  els.badge.textContent = paid ? t('plan.pro') : t('plan.free');
   els.badge.className = paid ? 'badge badge-pro' : 'badge badge-free';
   els.proFree.hidden = paid;
   els.proActive.hidden = !paid;
@@ -116,17 +125,17 @@ function renderListItem(routine: Routine): HTMLElement {
   main.className = 'ri-main';
   const name = document.createElement('div');
   name.className = 'ri-name';
-  name.textContent = routine.name || 'Untitled routine';
+  name.textContent = routine.name || t('routine.untitled');
   const meta = document.createElement('div');
   meta.className = 'ri-meta';
-  meta.textContent = `${formatDays(routine.schedule.days)} · ${routine.schedule.time} · ${routine.urls.length} tabs · ${formatNextRun(routine)}`;
+  meta.textContent = `${formatDays(routine.schedule.days)} · ${routine.schedule.time} · ${tabCount(routine.urls.length)} · ${formatNextRun(routine)}`;
   main.append(name, meta);
 
   const actions = document.createElement('div');
   actions.className = 'ri-actions';
   const editBtn = document.createElement('button');
   editBtn.className = 'btn btn-ghost btn-sm';
-  editBtn.textContent = 'Edit';
+  editBtn.textContent = t('card.edit');
   editBtn.addEventListener('click', () => void openEditor(routine.id));
   actions.append(editBtn);
 
@@ -152,7 +161,7 @@ async function openEditor(id: string | null): Promise<void> {
   if (id) {
     const r = await getRoutine(id);
     if (!r) return;
-    els.editorTitle.textContent = 'Edit routine';
+    els.editorTitle.textContent = t('editor.titleEdit');
     els.fName.value = r.name;
     els.fUrls.value = r.urls.join('\n');
     setSelectedDays(r.schedule.days);
@@ -161,7 +170,7 @@ async function openEditor(id: string | null): Promise<void> {
     els.fEnabled.checked = r.enabled;
     els.deleteBtn.hidden = false;
   } else {
-    els.editorTitle.textContent = 'New routine';
+    els.editorTitle.textContent = t('editor.titleNew');
     els.fName.value = '';
     els.fUrls.value = '';
     setSelectedDays([1, 2, 3, 4, 5]); // default weekdays
@@ -182,7 +191,7 @@ function closeEditor(): void {
 }
 
 async function saveEditor(): Promise<void> {
-  const name = els.fName.value.trim() || 'Untitled routine';
+  const name = els.fName.value.trim() || t('routine.untitled');
   const rawUrls = linesToArray(els.fUrls.value);
   const { valid, invalid } = normalizeUrlList(rawUrls);
   const days = getSelectedDays();
@@ -190,11 +199,11 @@ async function saveEditor(): Promise<void> {
 
   // Validation
   const errors: string[] = [];
-  if (valid.length === 0) errors.push('Add at least one valid http/https URL.');
+  if (valid.length === 0) errors.push(t('error.noValidUrl'));
   if (invalid.length > 0) {
-    errors.push(`Invalid URL(s): ${invalid.join(', ')}`);
+    errors.push(t('error.invalidUrls', { list: invalid.join(', ') }));
   }
-  if (days.length === 0) errors.push('Select at least one day.');
+  if (days.length === 0) errors.push(t('error.noDays'));
 
   if (errors.length > 0) {
     els.urlErrors.textContent = errors.join('\n');
@@ -228,8 +237,8 @@ async function saveEditor(): Promise<void> {
 async function handleDelete(): Promise<void> {
   if (!editingId) return;
   const r = await getRoutine(editingId);
-  const name = r?.name || 'this routine';
-  if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+  const name = r?.name || t('confirm.thisRoutine');
+  if (!confirm(t('confirm.delete', { name }))) return;
   await clearAlarm(editingId);
   await deleteRoutine(editingId);
   closeEditor();
@@ -246,7 +255,9 @@ async function loadSettings(): Promise<void> {
 async function saveSettingsHandler(): Promise<void> {
   const grace = Math.max(0, Math.min(1440, Number(els.sGrace.value) || 0));
   els.sGrace.value = String(grace);
+  const current = await getSettings(); // preserve fields we don't edit here (language)
   const settings: Settings = {
+    ...current,
     catchUpEnabled: els.sCatchup.checked,
     catchUpGraceMinutes: grace,
   };
@@ -262,9 +273,17 @@ els.cancelBtn.addEventListener('click', closeEditor);
 els.deleteBtn.addEventListener('click', () => void handleDelete());
 els.saveSettingsBtn.addEventListener('click', () => void saveSettingsHandler());
 els.upgradeBtn.addEventListener('click', () => void openPaymentPage());
+els.langToggle.addEventListener('click', async () => {
+  await setLanguage(otherLang());
+  location.reload(); // simplest reliable re-render of static + dynamic strings
+});
 onPaidChanged(() => void refreshPlan());
 
 async function init(): Promise<void> {
+  await initI18n();
+  applyStaticI18n();
+  document.title = t('options.docTitle');
+  els.langToggle.textContent = languageToggleLabel();
   buildDayChips();
   await refreshPlan();
   await loadSettings();

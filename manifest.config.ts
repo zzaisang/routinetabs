@@ -3,7 +3,7 @@ import pkg from './package.json';
 
 // RoutineTabs Manifest V3
 //
-// Permission justification (see PLAN.md §11):
+// Permission justification:
 //  - "alarms":  needed to trigger routines at the user's chosen time.
 //  - "storage": needed to persist routines/settings locally.
 //

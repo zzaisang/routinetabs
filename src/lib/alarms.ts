@@ -1,4 +1,4 @@
-// Alarm naming + (re)scheduling helpers (PLAN.md §5.3 / §5.4 / §5.6).
+// Alarm naming + (re)scheduling helpers.
 //
 // Strategy: self-rescheduling ONE-SHOT alarms. We never use periodInMinutes
 // (which drifts across DST). Each routine maps 1:1 to an alarm named
@@ -48,7 +48,7 @@ export async function clearRoutine(routineId: string): Promise<void> {
 
 /**
  * Rebuild all alarms from the given routines: clear every routine alarm, then
- * schedule the enabled ones. Used on install / startup (PLAN.md §5.4).
+ * schedule the enabled ones. Used on install / startup.
  */
 export async function rehydrateAlarms(routines: Routine[], from: Date = new Date()): Promise<void> {
   const all = await chrome.alarms.getAll();

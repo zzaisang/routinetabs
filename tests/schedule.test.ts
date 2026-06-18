@@ -7,7 +7,7 @@ import {
 } from '../src/lib/schedule';
 import type { RoutineSchedule } from '../src/lib/types';
 
-// NOTE on timezone determinism (PLAN.md §10):
+// NOTE on timezone determinism:
 // We construct the `from`/`now` Date with `new Date(year, month, day, hh, mm)`,
 // i.e. the *local-time* constructor — the same constructor the engine uses.
 // This makes the tests pass regardless of which timezone CI runs in, because

@@ -1,4 +1,4 @@
-// Opening tab sets (PLAN.md §5.1).
+// Opening tab sets.
 //
 // IMPORTANT: chrome.tabs.create({ url }) does NOT require the "tabs" permission.
 // We only ever *create* tabs; we never read tab url/title, so no permission needed.

@@ -1,4 +1,4 @@
-// GitHub Sponsors donation link (PLAN.md §4 — monetization model is
+// GitHub Sponsors donation link (monetization model is
 // "free + donations", not paid). RoutineTabs is fully free; this is an optional
 // "support development" link that opens the maintainer's GitHub Sponsors page.
 //

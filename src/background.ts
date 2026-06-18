@@ -1,4 +1,4 @@
-// RoutineTabs service worker (PLAN.md §5 — the reliability core).
+// RoutineTabs service worker (the reliability core).
 //
 // HARD RULES (do not break these — they are why this product wins):
 //  - NO setTimeout / setInterval. The MV3 worker is evicted when idle; timers die.
@@ -54,7 +54,7 @@ async function warmUp(): Promise<void> {
 
 /**
  * Rehydrate all alarms from storage and catch up any occurrences missed while the
- * browser/worker was down (PLAN.md §5.4 / §5.5).
+ * browser/worker was down.
  */
 async function rebuildAndCatchUp(): Promise<void> {
   const state = await getState();

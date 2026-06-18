@@ -1,9 +1,9 @@
-// Data model for RoutineTabs (see PLAN.md §6).
+// Data model for RoutineTabs.
 // All persisted shapes live here so storage + UI + background agree on one source of truth.
 
 export type WeekDay = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0=Sun ... 6=Sat
 
-/** UI language. Toggled in-app and persisted in settings (PLAN.md §3 update). */
+/** UI language. Toggled in-app and persisted in settings. */
 export type Language = 'en' | 'ko';
 
 export interface RoutineSchedule {

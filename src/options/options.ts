@@ -1,4 +1,4 @@
-// Options page logic (PLAN.md §7.2, M1).
+// Options page logic.
 // Routine CRUD, global catch-up settings, and a GitHub Sponsors link.
 // All features are free — there is no paywall.
 

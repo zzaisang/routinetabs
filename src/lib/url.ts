@@ -1,4 +1,4 @@
-// URL normalization + validation (PLAN.md §6).
+// URL normalization + validation.
 // Only http/https absolute URLs are allowed. We never touch page content, so this
 // is purely about producing a value safe to pass to chrome.tabs.create({ url }).
 

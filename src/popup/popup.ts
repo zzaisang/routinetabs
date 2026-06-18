@@ -1,4 +1,4 @@
-// Popup logic (PLAN.md §7.1, M3).
+// Popup logic.
 // Shows routines with toggle + "Run now", links to Options for editing,
 // and an optional GitHub Sponsors link. All features are free.
 

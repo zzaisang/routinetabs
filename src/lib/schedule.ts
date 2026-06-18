@@ -1,9 +1,9 @@
-// Pure scheduling logic for RoutineTabs (see PLAN.md §5.3 / §5.5 / §10).
+// Pure scheduling logic for RoutineTabs.
 //
 // CRITICAL: this module must stay pure (no chrome.* / no Date.now() except via the
 // `from` argument callers pass in). That keeps it unit-testable and DST-correct.
 //
-// DST strategy (PLAN.md §5.3):
+// DST strategy:
 //   We compute the *next occurrence* by constructing a Date at the user's local
 //   wall-clock time on the relevant calendar day, using the local-time Date
 //   constructor (new Date(y, m, d, hh, mm)). The JS engine resolves that local
@@ -46,7 +46,7 @@ function localTimestampOnDay(
 /**
  * Compute the next firing timestamp (epoch ms) at or after `from` for the schedule.
  *
- * Rules (PLAN.md §10):
+ * Rules:
  *  - today is a scheduled day & time not yet passed  -> today
  *  - today is a scheduled day & time already passed  -> next scheduled day
  *  - multiple days -> the soonest upcoming occurrence
@@ -134,7 +134,7 @@ export interface MissedDecision {
 
 /**
  * Decide whether a routine has a "missed" occurrence that should be caught up
- * after the browser was off / the worker was evicted (PLAN.md §5.5).
+ * after the browser was off / the worker was evicted.
  *
  * A missed occurrence is caught up iff ALL of:
  *   - catchUpEnabled is true

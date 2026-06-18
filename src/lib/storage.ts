@@ -1,4 +1,4 @@
-// chrome.storage.local wrapper + migration (PLAN.md §6).
+// chrome.storage.local wrapper + migration.
 // All persistence goes through here — UI/background never call chrome.storage directly.
 
 import {

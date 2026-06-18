@@ -4,3 +4,7 @@ dist/
 .DS_Store
 .vite/
 *.zip
+
+# local-only marketing/raw assets (README uses docs/screenshots/ instead)
+captures/
+store-screenshots/

@@ -34,7 +34,7 @@ Removing the extension, or clearing its storage, permanently deletes all stored
 routines and settings. There is no server-side copy.
 
 ## Contact
-Questions? Contact: `<your-contact-email>`  <!-- TODO: fill in before publishing -->
+Questions? Contact: dev.zzaisang@gmail.com
 
 ## Changes
 If this policy changes, the "Last updated" date above will be revised.
